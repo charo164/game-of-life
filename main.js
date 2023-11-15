@@ -40,8 +40,8 @@ window.addEventListener('load', () => {
 function onPlayClicked(e) {
   e.preventDefault();
 
-  const i = e.target.querySelector('i');
-  const tooltip = e.target.querySelector('.tooltiptext');
+  const i = document.querySelector('#play i');
+  const tooltip = document.querySelector('#play .tooltiptext');
 
   if (playing) {
     i?.classList.remove('fa-pause');
