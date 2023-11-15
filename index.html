@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Jeu de la vie</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="shortcut icon" href="image/favicon.png" type="image/x-icon" />
+    <script src="https://kit.fontawesome.com/1294ac60c2.js" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <table id="board"></table>
+
+    <footer class="footer">
+      <div class="footer__controller">
+        <div class="footer__controller__buttons">
+          <button id="next" class="btn tooltip">
+            <i class="fa-solid fa-forward"></i>
+            <span class="tooltiptext">Next generation</span>
+          </button>
+          <button id="play" class="btn tooltip">
+            <i class="fa-solid fa-play"></i>
+            <span class="tooltiptext">Play</span>
+          </button>
+          <button id="clear" class="btn tooltip">
+            <i class="fa-solid fa-eraser"></i>
+            <span class="tooltiptext">Clear</span>
+          </button>
+          <button id="infos" class="btn tooltip" onclick="openModal()">
+            <i class="fa-solid fa-circle-question"></i>
+            <span class="tooltiptext">Les règles du jeu</span>
+          </button>
+          <select id="model" class="btn"></select>
+        </div>
+
+        <div class="footer__controller__speed">
+          <div>Speed</div>
+          <div>
+            <input id="speed" type="range" min="10" max="200" />
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div class="modal">
+      <div class="modal__wrapper">
+        <div class="modal__img">
+          <img src="image/gospers_glider_gun.gif" alt="" />
+        </div>
+        <div class="modal__txt">
+          <h2>C'est quoi le jeux de la vie? 🤔</h2>
+          <p>
+            En gros c'est un automate cellulaire inventé par le mathématicien John Conway. Il se déroule
+            sur une grille bidimensionnelle où chaque cellule peut être soit vivante, soit morte.
+            L'évolution du jeu est déterminée par des règles simples appliquées à chaque génération.
+          </p>
+          <h2>Règles du Jeu de la Vie 📜</h2>
+
+          <ol>
+            <li>
+              Une cellule morte avec exactement trois voisins vivants devient vivante à la génération
+              suivante.
+            </li>
+            <li>
+              Une cellule vivante avec deux ou trois voisins vivants reste vivante à la génération
+              suivante.
+            </li>
+            <li>
+              Toute autre cellule vivante meurt à la génération suivante (solitude ou surpopulation).
+            </li>
+            <li>
+              Les cellules mortes restent mortes, sauf si elles ont exactement trois voisins vivants.
+            </li>
+          </ol>
+          <h2>Comment jouer? 🎲</h2>
+          <p>
+            Pour jouer, il suffit de cliquer sur les cellules pour les faire vivre ou les tuer. Vous
+            pouvez aussi choisir un modèle de départ dans la liste déroulante.
+          </p>
+        </div>
+        <div class="modal__nav">
+          <button id="skip" class="btn" onclick="closeModal()">Fermer</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="constants.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
