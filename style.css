@@ -91,7 +91,7 @@ li {
 
 #board .cell.dead {
   background-color: #18181b;
-  border: 3px solid #0088aa6b;
+  border: 1px solid #0088aa6b;
   animation: none;
 }
 
