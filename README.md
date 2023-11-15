@@ -1,7 +1,7 @@
 # Jeu de la Vie Challenge
 
 <p>
-  <img src="./image/gospers_glider_gun.gif" alt="Gospers Glider Gun" width="420" height="250">
+  <img src="./assets/image/gospers_glider_gun.gif" alt="Gospers Glider Gun" width="420" height="250">
 </p>
 
 ## Table des Matières
