@@ -8,6 +8,7 @@
 
 1. [Introduction](#introduction)
 2. [Règles du Jeu de la Vie](#règles-du-jeu-de-la-vie)
+2. [Comment lancer le jeu](#comment-lancer-le-jeu)
 3. [Contribution](#contribution)
 
 ## Introduction
@@ -22,6 +23,20 @@ Les règles du Jeu de la Vie sont les suivantes :
 2. Une cellule vivante avec deux ou trois voisins vivants reste vivante à la génération suivante.
 3. Toute autre cellule vivante meurt à la génération suivante (solitude ou surpopulation).
 4. Les cellules mortes restent mortes, sauf si elles ont exactement trois voisins vivants.
+
+## Comment lancer le jeu
+
+Pour lancer le jeu, il suffit de lancer les commande suivante (il faut avoir [git](https://git-scm.com/) d'installer) :
+
+```bash
+# Cloner le projet 
+$ git clone https://github.com/charo164/game-of-life.git
+
+# Se déplacer dans le dossier du projet
+$ cd game-of-life
+```
+
+puis lancer le fichier `index.html` dans votre navigateur.
 
 ## Contribution
 
