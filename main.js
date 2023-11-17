@@ -31,7 +31,12 @@ model.addEventListener('change', onPatternChange);
 window.addEventListener('load', () => {
   initInfosModal();
   generatePatterOption();
+  scrollToMiddleOfPage();
 });
+
+function scrollToMiddleOfPage() {
+  window.scrollTo(50, document.body.scrollHeight / 4, { behavior: 'smooth' });
+}
 
 /**
  *
@@ -72,20 +77,21 @@ function onPlayClicked(e) {
  */
 function onPatternChange(e) {
   clearBoard();
+  scrollToMiddleOfPage();
   const selected = e.target.value;
   const model = MODELS[selected];
 
   if (model) {
-    const i = Math.floor((ROWS - model.length) / 2);
-    const j = Math.floor((COLUMNS - model[0].length) / 2);
+    const row = Math.floor(ROWS / 2) - Math.floor(model.length / 2);
+    const column = Math.floor(COLUMNS / 2) - Math.floor(model[0].length / 2);
 
-    for (let x = 0; x < model.length; ++x) {
-      for (let y = 0; y < model[0].length; ++y) {
-        state[i + x][j + y] = model[x][y];
-        if (model[x][y] === 1) {
-          getHtmlCell(i + x, j + y).classList.remove('dead');
+    for (let i = 0; i < model.length; ++i) {
+      for (let j = 0; j < model[0].length; ++j) {
+        state[row + i][column + j] = model[i][j];
+        if (model[i][j] === 1) {
+          getHtmlCell(row + i, column + j).classList.remove('dead');
         } else {
-          getHtmlCell(i + x, j + y).classList.add('dead');
+          getHtmlCell(row + i, column + j).classList.add('dead');
         }
       }
     }
