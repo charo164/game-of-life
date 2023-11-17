@@ -1,5 +1,5 @@
 const CELL_DIMENSION = 20;
-const ROWS = 60;
+const ROWS = 40;
 const COLUMNS = 80;
 const DARK_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--dark-color');
 const LIGHT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--light-color');
