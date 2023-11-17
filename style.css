@@ -30,6 +30,28 @@ li {
   margin: 0.5rem 0;
 }
 
+#population {
+  display: flex;
+  gap: 1rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: 1rem;
+}
+
+#population > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: bold;
+}
+
+#population > div:nth-child(1) {
+  color: #22c55e;
+}
+#population > div:nth-child(2) {
+  color: #ef4444;
+}
 .footer {
   display: flex;
   justify-content: center;

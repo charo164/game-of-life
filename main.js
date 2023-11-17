@@ -11,6 +11,8 @@ let nextState = [...Array(ROWS)].map((e) => Array(COLUMNS).fill(0));
  */
 let timer;
 let playing = false;
+let aliveCell = 0;
+let deathCell = ROWS * COLUMNS;
 
 const play = document.getElementById('play');
 const clear = document.getElementById('clear');
@@ -32,10 +34,21 @@ window.addEventListener('load', () => {
   initInfosModal();
   generatePatterOption();
   scrollToMiddleOfPage();
+  renderPopulation();
 });
 
 function scrollToMiddleOfPage() {
   window.scrollTo(50, document.body.scrollHeight / 4, { behavior: 'smooth' });
+}
+
+function renderPopulation() {
+  const death = document.querySelector('#death');
+  const alive = document.querySelector('#alive');
+
+  if (death && alive) {
+    death.innerHTML = deathCell;
+    alive.innerHTML = aliveCell;
+  }
 }
 
 /**
@@ -76,6 +89,8 @@ function onPlayClicked(e) {
  * @param {Event} e
  */
 function onPatternChange(e) {
+  aliveCell = 0;
+  deathCell = ROWS * COLUMNS;
   clearBoard();
   scrollToMiddleOfPage();
   const selected = e.target.value;
@@ -90,11 +105,14 @@ function onPatternChange(e) {
         state[row + i][column + j] = model[i][j];
         if (model[i][j] === 1) {
           getHtmlCell(row + i, column + j).classList.remove('dead');
+          aliveCell++;
+          deathCell--;
         } else {
           getHtmlCell(row + i, column + j).classList.add('dead');
         }
       }
     }
+    renderPopulation();
   }
 }
 
@@ -158,12 +176,17 @@ function toggle(i, j) {
   if (state[i][j] === 0) {
     state[i][j] = 1;
     getHtmlCell(i, j).classList.remove('dead');
+    aliveCell++;
+    deathCell--;
   } else {
     state[i][j] = 0;
     getHtmlCell(i, j).classList.add('dead');
+    aliveCell--;
+    deathCell++;
   }
 
   next.disabled = false;
+  renderPopulation();
 }
 
 /**
@@ -171,6 +194,8 @@ function toggle(i, j) {
  * @param {number} [repeat=0] - If 1, sets a timer to repeat the calculation.
  */
 function nextGeneration(repeat = 0) {
+  aliveCell = 0;
+  deathCell = ROWS * COLUMNS;
   for (let i = 0; i < ROWS; ++i) {
     for (let j = 0; j < COLUMNS; ++j) {
       const cell = state[i][j];
@@ -198,6 +223,8 @@ function nextGeneration(repeat = 0) {
     for (let j = 0; j < COLUMNS; j++) {
       if (nextState[i][j] === 1) {
         getHtmlCell(i, j).classList.remove('dead');
+        aliveCell++;
+        deathCell--;
       } else {
         getHtmlCell(i, j).classList.add('dead');
       }
@@ -206,6 +233,8 @@ function nextGeneration(repeat = 0) {
 
   state = nextState;
   nextState = [...Array(ROWS)].map((e) => Array(COLUMNS).fill(0));
+
+  renderPopulation();
 
   if (repeat === 1) {
     clearInterval(timer);
@@ -223,6 +252,10 @@ function clearBoard() {
       getHtmlCell(i, j).classList.add('dead');
     }
   }
+
+  aliveCell = 0;
+  deathCell = ROWS * COLUMNS;
+  renderPopulation();
 
   next.disabled = true;
 }
