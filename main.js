@@ -1,5 +1,3 @@
-import { ROWS, COLUMNS, CELL_DIMENSION, MODELS } from './constants.js';
-
 /**
  * @fileoverview Main file of the game of life.
  * @version 0.0.1
@@ -45,7 +43,7 @@ import { ROWS, COLUMNS, CELL_DIMENSION, MODELS } from './constants.js';
  * @property {function} openModal - Opens the modal.
  * @property {function} stopPropagation - Stops the event propagation.
  */
-export const game = {
+const game = {
   state: [],
   nextState: [],
   timer: null,

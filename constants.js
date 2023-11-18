@@ -1,9 +1,9 @@
-export const CELL_DIMENSION = 20;
-export const ROWS = 32;
-export const COLUMNS = 65;
-export const DARK_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--dark-color');
-export const LIGHT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--light-color');
-export const MODELS = {
+const CELL_DIMENSION = 20;
+const ROWS = 32;
+const COLUMNS = 65;
+const DARK_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--dark-color');
+const LIGHT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--light-color');
+const MODELS = {
   glider: [
     [0, 1, 0],
     [0, 0, 1],
