@@ -13,23 +13,27 @@
     <div id="board"></div>
 
     <div id="population">
-      <div>Vivant : <span id="alive">0</span></div>
-      <div>Mort : <span id="death">0</span></div>
+      <div>Vivantes : <span id="alive">0</span></div>
+      <div>Mortes : <span id="death">0</span></div>
     </div>
 
     <div class="footer__controller">
       <div class="footer__controller__buttons">
         <button id="next" class="btn tooltip">
           <i class="fa-solid fa-forward"></i>
-          <span class="tooltipText">Next generation</span>
+          <span class="tooltipText">Generation Suivante</span>
         </button>
         <button id="play" class="btn tooltip">
           <i class="fa-solid fa-play"></i>
-          <span class="tooltipText">Play</span>
+          <span class="tooltipText">Jouer</span>
+        </button>
+        <button id="random" class="btn tooltip">
+          <i class="fa-solid fa-dice"></i>
+          <span class="tooltipText">Au Hazard</span>
         </button>
         <button id="clear" class="btn tooltip">
           <i class="fa-solid fa-eraser"></i>
-          <span class="tooltipText">Clear</span>
+          <span class="tooltipText">Nettoyer</span>
         </button>
         <button id="infos" class="btn tooltip">
           <i class="fa-solid fa-circle-question"></i>
@@ -38,11 +42,12 @@
         <select id="model" class="btn"></select>
       </div>
 
-      <div class="footer__controller__speed">
-        <div>Speed</div>
+      <div class="footer__controller__speed tooltip">
         <div>
           <input id="speed" type="range" min="10" max="350" />
         </div>
+
+        <span class="tooltipText">Vitesse</span>
       </div>
     </div>
 

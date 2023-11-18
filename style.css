@@ -57,7 +57,7 @@ li {
   bottom: 0;
   transform: translateX(-50%);
   gap: 1rem;
-  padding: 0.05rem;
+  padding: 0.7rem;
 }
 
 .footer__controller__speed {
@@ -115,14 +115,14 @@ li {
 }
 
 .btn {
-  padding: 0.5rem 1rem;
+  padding: 0.2rem 0.5rem;
   border: none;
   border-radius: 5px;
   background-color: var(--blue-color);
   color: var(--white, #fff);
   cursor: pointer;
   font-weight: bold;
-  font-size: 0.8rem;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 

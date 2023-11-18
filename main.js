@@ -22,6 +22,7 @@ import { ROWS, COLUMNS, CELL_DIMENSION, MODELS } from './constants.js';
  * @property {HTMLElement} next - The next button element.
  * @property {HTMLElement} modalWrapper - The modal wrapper element.
  * @property {HTMLElement} board - The game board element.
+ * @property {HTMLElement} random - The random button element.
  *
  * @property {function} initializeGrid - Initializes the game grid.
  * @property {function} initState - Initializes the game state and next state.
@@ -61,6 +62,8 @@ export const game = {
   skip: document.getElementById('skip'),
   modalWrapper: document.querySelector('.modal__wrapper'),
   board: document.querySelector('#board'),
+  random: document.getElementById('random'),
+  save: document.getElementById('save'),
 
   initializeGrid() {
     return Array.from({ length: ROWS }, () => Array(COLUMNS).fill(0));
@@ -84,6 +87,7 @@ export const game = {
     this.clear.addEventListener('click', this.clearBoard.bind(this));
     this.model.addEventListener('change', this.onPatternChange.bind(this));
     this.next.addEventListener('click', () => this.nextGeneration(0));
+    this.random.addEventListener('click', this.randomPopulation.bind(this));
 
     window.addEventListener('load', () => {
       this.initInfosModal();
@@ -119,6 +123,7 @@ export const game = {
 
     this.clear.disabled = this.playing;
     this.next.disabled = this.playing;
+    this.random.disabled = this.playing;
   },
 
   togglePlayButton(removeClass, addClass, tooltipText) {
@@ -128,6 +133,22 @@ export const game = {
     i?.classList.remove(removeClass);
     i?.classList.add(addClass);
     if (tooltip) tooltip.innerHTML = tooltipText;
+  },
+
+  randomPopulation() {
+    for (let i = 0; i < ROWS; ++i) {
+      for (let j = 0; j < COLUMNS; ++j) {
+        this.state[i][j] = Math.floor(Math.random() * 2);
+        const htmlCell = this.getHtmlCell(i, j);
+        if (this.state[i][j] === 1) {
+          htmlCell.classList.remove('dead');
+          this.aliveCell++;
+          this.deathCell--;
+        } else {
+          htmlCell.classList.add('dead');
+        }
+      }
+    }
   },
 
   calculateSpeed() {

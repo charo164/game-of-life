@@ -1,6 +1,6 @@
 export const CELL_DIMENSION = 20;
-export const ROWS = Math.floor(document.documentElement.getBoundingClientRect().height / CELL_DIMENSION) - 6;
-export const COLUMNS = Math.floor(document.documentElement.getBoundingClientRect().width / CELL_DIMENSION) - 5;
+export const ROWS = 32;
+export const COLUMNS = 65;
 export const DARK_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--dark-color');
 export const LIGHT_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--light-color');
 export const MODELS = {
