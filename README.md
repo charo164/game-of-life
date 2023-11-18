@@ -9,7 +9,9 @@
 1. [Introduction](#introduction)
 2. [Règles du Jeu de la Vie](#règles-du-jeu-de-la-vie)
 2. [Comment lancer le jeu](#comment-lancer-le-jeu)
-3. [Contribution](#contribution)
+3. [Comment jouer](#comment-jouer)
+4. [Technologies](#technologies)
+5. [Contribution](#contribution)
 
 ## Introduction
 
@@ -37,6 +39,23 @@ $ cd game-of-life
 ```
 
 puis lancer le fichier `index.html` dans votre navigateur.
+
+
+## Comment jouer
+
+Pour jouer, il suffit de cliquer sur les cellules pour les faire vivre ou mourir (Maintener le click et dessiner pour aller plus vite). Vous pouvez aussi utiliser le boutons `Start` pour lancer ou arrêter le jeu. Le bouton `Clear` permet de vider la grille. Le bouton `Random` permet de générer une grille aléatoire. Le bouton `Next` permet de passer à la génération suivante. Le bouton `Speed` permet de changer la vitesse du jeu.
+
+<p>
+  <img src="./assets/image/game-of-life.gif" alt="Demo" width="420" height="250">
+</p>
+
+## Technologies
+
+Les technologies utilisées pour ce projet sont les suivantes :
+
+- HTML
+- CSS
+- JavaScript
 
 ## Contribution
 
