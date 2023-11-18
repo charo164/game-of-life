@@ -147,6 +147,7 @@ const game = {
         }
       }
     }
+    this.renderPopulation();
   },
 
   calculateSpeed() {
