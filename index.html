@@ -10,43 +10,41 @@
     <link rel="shortcut icon" href="./assets/image/favicon.png" type="image/x-icon" />
   </head>
   <body>
-    <table id="board"></table>
+    <div id="board"></div>
 
     <div id="population">
       <div>Vivant : <span id="alive">0</span></div>
       <div>Mort : <span id="death">0</span></div>
     </div>
 
-    <footer class="footer">
-      <div class="footer__controller">
-        <div class="footer__controller__buttons">
-          <button id="next" class="btn tooltip">
-            <i class="fa-solid fa-forward"></i>
-            <span class="tooltiptext">Next generation</span>
-          </button>
-          <button id="play" class="btn tooltip">
-            <i class="fa-solid fa-play"></i>
-            <span class="tooltiptext">Play</span>
-          </button>
-          <button id="clear" class="btn tooltip">
-            <i class="fa-solid fa-eraser"></i>
-            <span class="tooltiptext">Clear</span>
-          </button>
-          <button id="infos" class="btn tooltip" onclick="openModal()">
-            <i class="fa-solid fa-circle-question"></i>
-            <span class="tooltiptext">Les règles du jeu</span>
-          </button>
-          <select id="model" class="btn"></select>
-        </div>
+    <div class="footer__controller">
+      <div class="footer__controller__buttons">
+        <button id="next" class="btn tooltip">
+          <i class="fa-solid fa-forward"></i>
+          <span class="tooltipText">Next generation</span>
+        </button>
+        <button id="play" class="btn tooltip">
+          <i class="fa-solid fa-play"></i>
+          <span class="tooltipText">Play</span>
+        </button>
+        <button id="clear" class="btn tooltip">
+          <i class="fa-solid fa-eraser"></i>
+          <span class="tooltipText">Clear</span>
+        </button>
+        <button id="infos" class="btn tooltip">
+          <i class="fa-solid fa-circle-question"></i>
+          <span class="tooltipText">Les règles du jeu</span>
+        </button>
+        <select id="model" class="btn"></select>
+      </div>
 
-        <div class="footer__controller__speed">
-          <div>Speed</div>
-          <div>
-            <input id="speed" type="range" min="10" max="200" />
-          </div>
+      <div class="footer__controller__speed">
+        <div>Speed</div>
+        <div>
+          <input id="speed" type="range" min="10" max="350" />
         </div>
       </div>
-    </footer>
+    </div>
 
     <div class="modal">
       <div class="modal__wrapper">
@@ -83,14 +81,16 @@
             Pour jouer, il suffit de cliquer sur les cellules pour les faire vivre ou les tuer. Vous
             pouvez aussi choisir un modèle de départ dans la liste déroulante.
           </p>
+          <p class="demo">
+            <img src="./assets/image/game-of-life.gif" alt="" width="100%" />
+          </p>
         </div>
         <div class="modal__nav">
-          <button id="skip" class="btn" onclick="closeModal()">Fermer</button>
+          <button id="skip" class="btn">Fermer</button>
         </div>
       </div>
     </div>
 
-    <script src="./constants.js"></script>
-    <script src="./main.js"></script>
+    <script type="module" src="./main.js"></script>
   </body>
 </html>
