@@ -11,8 +11,14 @@
  * @property {number} timer - The timer used for the game loop.
  * @property {boolean} playing - Indicates whether the game is currently playing or not.
  * @property {number} aliveCell - The number of alive cells in the game grid.
+ * @property {boolean} isDown - Indicates whether the mouse is down or not.
+ * @property {number} startX - The x coordinate of the mouse when it is down.
+ * @property {number} startY - The y coordinate of the mouse when it is down.
+ * @property {number} scrollLeft - The scroll left value of the game board.
+ * @property {number} scrollTop - The scroll top value of the game board.
  * @property {number} deathCell - The number of dead cells in the game grid.
  * @property {number} generation - The current generation of the game.
+ * @property {boolean} editMode - Indicates whether the game is in edit mode or not.
  *
  * @property {HTMLElement} play - The play button element.
  * @property {HTMLElement} clear - The clear button element.
@@ -25,10 +31,19 @@
  * @property {HTMLElement} random - The random button element.
  * @property {HTMLElement} save - The save button element.
  * @property {HTMLElement} savedStateSelect - The saved state select element.
+ * @property {HTMLElement} cellColor - The cell color input element.
+ * @property {HTMLElement} nucColor - The nucleus color input element.
+ * @property {HTMLElement} editModeBtn - The edit mode button element.
  *
  * @property {function} initializeGrid - Initializes the game grid.
  * @property {function} initState - Initializes the game state and next state.
  * @property {function} init - Initializes the game.
+ * @property {function} centerBoard - Centers the game board.
+ * @property {function} onBoardMouseDown - Handles the board mouse down event.
+ * @property {function} onBoardMouseLeave - Handles the board mouse leave event.
+ * @property {function} onBoardMouseUp - Handles the board mouse up event.
+ * @property {function} onBoardMouseMove - Handles the board mouse move event.
+ * @property {function} changeColor - Handles the color change event.
  * @property {function} renderPopulation - Renders the population statistics.
  * @property {function} onPlayClicked - Handles the play button click event.
  * @property {function} togglePlayButton - Toggles the play button icon and tooltip.
@@ -57,8 +72,14 @@ const game = {
   timer: null,
   playing: false,
   aliveCell: 0,
+  isDown: false,
+  startX: null,
+  startY: null,
+  scrollLeft: null,
+  scrollTop: null,
   deathCell: ROWS * COLUMNS,
   generation: 0,
+  editMode: true,
   play: document.getElementById('play'),
   clear: document.getElementById('clear'),
   speed: document.getElementById('speed'),
@@ -72,6 +93,9 @@ const game = {
   random: document.getElementById('random'),
   save: document.getElementById('save'),
   savedStateSelect: document.getElementById('savedState'),
+  cellColor: document.getElementById('cellColor'),
+  nucColor: document.getElementById('nucColor'),
+  editModeBtn: document.getElementById('editMode'),
 
   initializeGrid() {
     return Array.from({ length: ROWS }, () => Array(COLUMNS).fill(0));
@@ -98,15 +122,59 @@ const game = {
     this.random.addEventListener('click', this.randomPopulation.bind(this));
     this.save.addEventListener('click', this.saveState.bind(this));
     this.savedStateSelect.addEventListener('change', this.onStateChange.bind(this));
+    this.nucColor.addEventListener('change', this.changeColor.bind(this));
+    this.cellColor.addEventListener('change', this.changeColor.bind(this));
+    this.editModeBtn.addEventListener('click', this.toggleEditMode.bind(this));
+    this.board.addEventListener('mousedown', this.onBoardMouseDown.bind(this), false);
+    this.board.addEventListener('mouseleave', this.onBoardMouseLeave.bind(this), false);
+    this.board.addEventListener('mouseup', this.onBoardMouseUp.bind(this), false);
+    this.board.addEventListener('mousemove', this.onBoardMouseMove.bind(this), false);
 
     window.addEventListener('load', () => {
       this.initInfosModal();
       this.generatePatternOption();
       this.loadSavedState();
       this.renderPopulation();
+      this.changeColor();
+      this.centerBoard();
     });
 
     this.createBoard();
+  },
+
+  centerBoard() {
+    this.board.scrollLeft = (this.board.scrollWidth - this.board.clientWidth) / 2;
+    this.board.scrollTop = (this.board.scrollHeight - this.board.clientHeight) / 2;
+  },
+
+  onBoardMouseDown(e) {
+    this.isDown = true;
+    this.startX = e.pageX - this.board.offsetLeft;
+    this.startY = e.pageY - this.board.offsetTop;
+    this.scrollLeft = this.board.scrollLeft;
+    this.scrollTop = this.board.scrollTop;
+  },
+  onBoardMouseLeave(e) {
+    this.isDown = false;
+  },
+  onBoardMouseUp(e) {
+    this.isDown = false;
+  },
+  onBoardMouseMove(e) {
+    if (!this.isDown || this.editMode) return;
+    e.preventDefault();
+    const x = e.pageX - this.board.offsetLeft;
+    const y = e.pageY - this.board.offsetTop;
+    const walkX = (x - this.startX) * 3;
+    const walkY = (y - this.startY) * 3;
+    this.board.scrollLeft = this.scrollLeft - walkX;
+    this.board.scrollTop = this.scrollTop - walkY;
+  },
+
+  changeColor(e) {
+    document.documentElement.style.setProperty('--cell-color', this.cellColor.value);
+    document.documentElement.style.setProperty('--cell-color-2', this.cellColor.value + '4D');
+    document.documentElement.style.setProperty('--nuc-color', this.nucColor.value);
   },
 
   renderPopulation() {
@@ -118,6 +186,18 @@ const game = {
       death.innerHTML = this.deathCell;
       alive.innerHTML = this.aliveCell;
       generation.innerHTML = this.generation;
+    }
+  },
+  toggleEditMode(e) {
+    this.editMode = !this.editMode;
+    if (this.editMode) {
+      this.editModeBtn.classList.add('active');
+      this.board.classList.add('editMode');
+      this.editModeBtn.querySelector('.tooltipText').innerHTML = 'Déactiver Edit mode';
+    } else {
+      this.editModeBtn.classList.remove('active');
+      this.board.classList.remove('editMode');
+      this.editModeBtn.querySelector('.tooltipText').innerHTML = 'Activer Edit mode';
     }
   },
 
@@ -291,8 +371,8 @@ const game = {
   },
 
   createBoard() {
-    this.board.style.gridTemplateColumns = `repeat(${COLUMNS}, ${CELL_DIMENSION}px)`;
-    this.board.style.gridTemplateRows = `repeat(${ROWS}, ${CELL_DIMENSION}px)`;
+    this.board.style.gridTemplateColumns = `repeat(${COLUMNS}, 1fr)`;
+    this.board.style.gridTemplateRows = `repeat(${ROWS}, 1fr)`;
 
     for (let i = 0; i < ROWS; ++i) {
       for (let j = 0; j < COLUMNS; ++j) {
@@ -310,8 +390,10 @@ const game = {
     cell.classList.add('cell', 'dead');
     cell.id = `${i} ${j}`;
 
-    cell.onmousedown = () => this.toggle(i, j);
-    cell.onmouseenter = (ev) => ev.buttons === 1 && this.toggle(i, j);
+    cell.onmousedown = () => {
+      if (this.editMode) this.toggle(i, j);
+    };
+    cell.onmouseenter = (ev) => this.editMode && ev.buttons === 1 && this.toggle(i, j);
 
     return cell;
   },
@@ -386,6 +468,7 @@ const game = {
   },
 
   clearBoard() {
+    this.centerBoard()
     for (let i = 0; i < ROWS; ++i) {
       for (let j = 0; j < COLUMNS; j++) {
         this.state[i][j] = 0;

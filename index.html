@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="./assets/image/favicon.png" type="image/x-icon" />
   </head>
   <body>
-    <div id="board"></div>
+    <div id="board" class="editMode"></div>
 
     <div id="population">
       <div>Génération : <span id="generation">0</span></div>
@@ -18,8 +18,23 @@
       <div>Mortes : <span id="death">0</span></div>
     </div>
 
+    <div id="theme">
+      <div class="tooltip">
+        <input type="color" value="#0088aa" name="" id="cellColor" />
+        <span class="tooltipText">Cellule</span>
+      </div>
+      <div class="tooltip">
+        <input type="color" value="#ffcc00" name="" id="nucColor" />
+        <span class="tooltipText">Nucléide</span>
+      </div>
+    </div>
+
     <div class="footer__controller">
       <div class="footer__controller__buttons">
+        <button id="editMode" class="btn active tooltip">
+          <i class="fa-solid fa-edit"></i>
+          <span class="tooltipText">Déactivé Mode Edition</span>
+        </button>
         <button id="next" class="btn tooltip">
           <i class="fa-solid fa-forward"></i>
           <span class="tooltipText">Generation Suivante</span>
