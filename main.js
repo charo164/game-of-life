@@ -7,6 +7,7 @@
  * @typedef {Object} Game
  * @property {number[][]} state - The current state of the game grid.
  * @property {number[][]} nextState - The next state of the game grid.
+ * @property {any[]} savedState - The saved state of the game grid.
  * @property {number} timer - The timer used for the game loop.
  * @property {boolean} playing - Indicates whether the game is currently playing or not.
  * @property {number} aliveCell - The number of alive cells in the game grid.
@@ -22,6 +23,8 @@
  * @property {HTMLElement} modalWrapper - The modal wrapper element.
  * @property {HTMLElement} board - The game board element.
  * @property {HTMLElement} random - The random button element.
+ * @property {HTMLElement} save - The save button element.
+ * @property {HTMLElement} savedStateSelect - The saved state select element.
  *
  * @property {function} initializeGrid - Initializes the game grid.
  * @property {function} initState - Initializes the game state and next state.
@@ -29,6 +32,9 @@
  * @property {function} renderPopulation - Renders the population statistics.
  * @property {function} onPlayClicked - Handles the play button click event.
  * @property {function} togglePlayButton - Toggles the play button icon and tooltip.
+ * @property {function} onStateChange - Handles the state change event.
+ * @property {function} saveState - Saves the current state of the game.
+ * @property {function} loadSavedState - Loads the saved state of the game.
  * @property {function} calculateSpeed - Calculates the game speed based on the speed input value.
  * @property {function} onPatternChange - Handles the pattern change event.
  * @property {function} initInfosModal - Initializes the information modal.
@@ -47,6 +53,7 @@
 const game = {
   state: [],
   nextState: [],
+  savedState: [],
   timer: null,
   playing: false,
   aliveCell: 0,
@@ -64,6 +71,7 @@ const game = {
   board: document.querySelector('#board'),
   random: document.getElementById('random'),
   save: document.getElementById('save'),
+  savedStateSelect: document.getElementById('savedState'),
 
   initializeGrid() {
     return Array.from({ length: ROWS }, () => Array(COLUMNS).fill(0));
@@ -88,10 +96,13 @@ const game = {
     this.model.addEventListener('change', this.onPatternChange.bind(this));
     this.next.addEventListener('click', () => this.nextGeneration(0));
     this.random.addEventListener('click', this.randomPopulation.bind(this));
+    this.save.addEventListener('click', this.saveState.bind(this));
+    this.savedStateSelect.addEventListener('change', this.onStateChange.bind(this));
 
     window.addEventListener('load', () => {
       this.initInfosModal();
       this.generatePatternOption();
+      this.loadSavedState();
       this.renderPopulation();
     });
 
@@ -126,6 +137,7 @@ const game = {
     this.clear.disabled = this.playing;
     this.next.disabled = this.playing;
     this.random.disabled = this.playing;
+    this.save.disabled = this.playing;
   },
 
   togglePlayButton(removeClass, addClass, tooltipText) {
@@ -135,6 +147,69 @@ const game = {
     i?.classList.remove(removeClass);
     i?.classList.add(addClass);
     if (tooltip) tooltip.innerHTML = tooltipText;
+  },
+
+  onStateChange(e) {
+    const index = e.target.value;
+
+    if (index !== '') {
+      this.clearBoard();
+      this.state = this.savedState[index].state.map((row) => [...row]);
+      this.nextState = this.initializeGrid();
+
+      for (let i = 0; i < ROWS; ++i) {
+        for (let j = 0; j < COLUMNS; ++j) {
+          const cell = this.state[i][j];
+          const htmlCell = this.getHtmlCell(i, j);
+          if (cell === 1) {
+            htmlCell.classList.remove('dead');
+            this.aliveCell++;
+            this.deathCell--;
+          } else {
+            htmlCell.classList.add('dead');
+          }
+        }
+      }
+
+      this.renderPopulation();
+    }
+  },
+
+  saveState() {
+    const label = prompt('Enter a label for this state');
+
+    if (label) {
+      this.savedState.push({
+        label,
+        state: this.state,
+      });
+    }
+
+    localStorage.setItem('savedState', JSON.stringify(this.savedState));
+    this.loadSavedState();
+  },
+
+  loadSavedState() {
+    const select = document.getElementById('savedState');
+    const storageDate = localStorage.getItem('savedState');
+
+    if (storageDate) {
+      this.savedState = JSON.parse(storageDate);
+    }
+
+    if (select) {
+      select.innerHTML = '';
+      const option = document.createElement('option');
+      option.value = '';
+      option.innerHTML = 'Enregistré';
+      select.appendChild(option);
+      this.savedState.forEach((state, index) => {
+        const option = document.createElement('option');
+        option.value = index;
+        option.innerHTML = state.label;
+        select.appendChild(option);
+      });
+    }
   },
 
   randomPopulation() {
