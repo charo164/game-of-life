@@ -26,6 +26,8 @@
  * @property {HTMLElement} model - The model select element.
  * @property {HTMLElement} modal - The modal element.
  * @property {HTMLElement} next - The next button element.
+ * @property {HTMLElement} infos - The information button element.
+ * @property {HTMLElement} skip - The skip button element.
  * @property {HTMLElement} modalWrapper - The modal wrapper element.
  * @property {HTMLElement} board - The game board element.
  * @property {HTMLElement} random - The random button element.
