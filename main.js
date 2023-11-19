@@ -138,6 +138,8 @@ const game = {
   },
 
   randomPopulation() {
+    this.clearBoard();
+
     for (let i = 0; i < ROWS; ++i) {
       for (let j = 0; j < COLUMNS; ++j) {
         this.state[i][j] = Math.floor(Math.random() * 2);
