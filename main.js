@@ -11,6 +11,7 @@
  * @property {boolean} playing - Indicates whether the game is currently playing or not.
  * @property {number} aliveCell - The number of alive cells in the game grid.
  * @property {number} deathCell - The number of dead cells in the game grid.
+ * @property {number} generation - The current generation of the game.
  *
  * @property {HTMLElement} play - The play button element.
  * @property {HTMLElement} clear - The clear button element.
@@ -50,6 +51,7 @@ const game = {
   playing: false,
   aliveCell: 0,
   deathCell: ROWS * COLUMNS,
+  generation: 0,
   play: document.getElementById('play'),
   clear: document.getElementById('clear'),
   speed: document.getElementById('speed'),
@@ -99,10 +101,12 @@ const game = {
   renderPopulation() {
     const death = document.querySelector('#death');
     const alive = document.querySelector('#alive');
+    const generation = document.querySelector('#generation');
 
     if (death && alive) {
       death.innerHTML = this.deathCell;
       alive.innerHTML = this.aliveCell;
+      generation.innerHTML = this.generation;
     }
   },
 
@@ -270,9 +274,13 @@ const game = {
 
         liveNeighbors -= cell;
 
-        if (cell === 1 && liveNeighbors < 2) this.nextState[i][j] = 0;
-        else if (cell === 1 && liveNeighbors > 3) this.nextState[i][j] = 0;
-        else if (cell === 0 && liveNeighbors === 3) this.nextState[i][j] = 1;
+        if (cell === 1 && liveNeighbors < 2) {
+          this.nextState[i][j] = 0;
+          this.getHtmlCell(i, j).classList.add('trace');
+        } else if (cell === 1 && liveNeighbors > 3) {
+          this.nextState[i][j] = 0;
+          this.getHtmlCell(i, j).classList.add('trace');
+        } else if (cell === 0 && liveNeighbors === 3) this.nextState[i][j] = 1;
         else this.nextState[i][j] = cell;
       }
     }
@@ -290,6 +298,7 @@ const game = {
       }
     }
 
+    this.generation++;
     [this.state, this.nextState] = [this.nextState, this.initializeGrid()];
     this.renderPopulation();
 
@@ -304,11 +313,13 @@ const game = {
       for (let j = 0; j < COLUMNS; j++) {
         this.state[i][j] = 0;
         this.getHtmlCell(i, j).classList.add('dead');
+        this.getHtmlCell(i, j).classList.remove('trace');
       }
     }
 
     this.aliveCell = 0;
     this.deathCell = ROWS * COLUMNS;
+    this.generation = 0;
     this.renderPopulation();
   },
 
